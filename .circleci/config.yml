@@ -22,8 +22,8 @@ jobs:
       - run:
           name: Deploy Over SSH
           command: |
-            ssh $SSH_USER@$SSH_HOST "docker login -u $DOCKER_USER -p $DOCKER_PASS"
-            ssh $SSH_USER@$SSH_HOST "docker container run -d --name circleci-test beaverjr/circleci-docker-test:latest"
+            ssh $SSH_USER@$SSH_HOST "sudo docker login -u $DOCKER_USER -p $DOCKER_PASS"
+            ssh $SSH_USER@$SSH_HOST "sudo docker container run -d --name circleci-test beaverjr/circleci-docker-test:latest"
 workflows:
   version: 2
   build_deploy: # workflow名
