@@ -5,11 +5,13 @@
 version: 2
 jobs:
  build:
-   machine: true
+   docker:
+     - image: circleci/php:7.1-browsers
    steps:
      - checkout
      # UI に保管されている ID・パスワードを使い
      # プライベート Docker イメージによる専用 DB を稼働させる
+     - setup_remote_docker:
      - run: |
          docker login -u $DOCKER_USER -p $DOCKER_PASS
          docker run -d --name test beaverjr/circleci-docker-test:latest
