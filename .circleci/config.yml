@@ -16,8 +16,7 @@ jobs:
          docker login -u $DOCKER_USER -p $DOCKER_PASS
          docker run -d --name circleci-test beaverjr/circleci-docker-test:latest
  deploy:
-    machine:
-      enabled: true
+     - image: circleci/php:7.1-browsers
     steps:
       - run:
           name: Deploy Over SSH
