@@ -14,4 +14,14 @@ jobs:
      - setup_remote_docker:
      - run: |
          docker login -u $DOCKER_USER -p $DOCKER_PASS
-         docker run -d --name test beaverjr/circleci-docker-test:latest
+         docker run -d --name circleci-test beaverjr/circleci-docker-test:latest
+ deploy:
+    machine:
+      enabled: true
+    steps:
+      - run:
+          name: Deploy Over SSH
+          command: |
+            ssh $SSH_USER@$SSH_HOST
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
+            docker run -d --name circleci-test beaverjr/circleci-docker-test:latest
