@@ -11,6 +11,10 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
+          name: Make the executable
+          command: |
+            go build -o demo-app src/main.go
+      - run:
           name: Build image
           docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest ./mysql
           docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest ./wp
