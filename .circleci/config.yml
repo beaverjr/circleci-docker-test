@@ -14,7 +14,7 @@ jobs:
           name: Build image
           command: |
             docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest -f ./mysql/Dockerfile
-            docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest ./wp
+            docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest -f ./wp/Dockerfile 
       - run:
           name: Test image
           command: |
