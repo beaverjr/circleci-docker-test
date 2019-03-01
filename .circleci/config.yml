@@ -6,33 +6,33 @@ version: 2
 jobs:
  build:
    docker:
-     - image: circleci/php:7.1-browsers
+     - image: circleci/golang:1.8
    steps:
-     - checkout
-     # UI に保管されている ID・パスワードを使い
-     # プライベート Docker イメージによる専用 DB を稼働させる
-     - setup_remote_docker:
-     - run: |
-         docker login -u $DOCKER_USER -p $DOCKER_PASS
-         docker container run -d --name circleci-test beaverjr/circleci-docker-test:latest
- deploy:
-    machine:
-      enabled: true
-    steps:
+      - checkout
+      - setup_remote_docker
       - run:
-          name: Deploy Over SSH
-          command: |
-            ssh $SSH_USER@$SSH_HOST "sudo docker login -u $DOCKER_USER -p $DOCKER_PASS"
-            ssh $SSH_USER@$SSH_HOST "sudo docker container run -d -p 8000:80 --name circleci-test-2 beaverjr/circleci-docker-test:latest"
-workflows:
-  version: 2
-  build_deploy: # workflow名
-    jobs:
-      - build
-      - deploy: 
-          requires: # buildとtestが成功したら
-            - build
-          filters: 
-            branches: # masterブランチのみ実行する
-              only: 
-                - master
+          name: Build image
+          docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest ./mysql
+          docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest ./wp
+      - run:
+          name: Test image
+          docker run -d -p 8000:80 --name wp-test 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
+          docker run -d --name mysql-test 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest
+          
+
+
+
+
+
+#workflows:
+#  version: 2
+#  build_deploy: # workflow名
+#    jobs:
+#      - build
+#      - deploy: 
+#          requires: # buildとtestが成功したら
+#            - build
+#          filters: 
+#            branches: # masterブランチのみ実行する
+#              only: 
+#                - master
