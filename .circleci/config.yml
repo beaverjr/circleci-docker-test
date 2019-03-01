@@ -17,13 +17,13 @@ jobs:
       - run:
           name: Build image
           command: |
-          docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest ./mysql
-          docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest ./wp
+            docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest ./mysql
+            docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest ./wp
       - run:
           name: Test image
           command: |
-          docker run -d -p 8000:80 --name wp-test 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
-          docker run -d --name mysql-test 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest
+            docker run -d -p 8000:80 --name wp-test 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
+            docker run -d --name mysql-test 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest
           
 
 
