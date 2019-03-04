@@ -16,6 +16,7 @@ jobs:
       - run:
           name: Build image
           command: |
+            pwd
             ls -al ./
             docker build -t $FULL_IMAGE_NAME_WP -f ./wp/Dockerfile .
             docker build -t $FULL_IMAGE_NAME_MYSQL -f ./mysql/Dockerfile .
@@ -82,7 +83,7 @@ jobs:
       - run:
           name: Deploy Over SSH
           command: |
-            rsync -av ./docker-compose.yml $SSH_USER@$SSH_HOST:/root/docker/swarm/test
+            rsync -av ./docker-compose.yml $SSH_USER@$SSH_HOST:/home/ec2-user/
 workflows:
   version: 2
   build_deploy: # workflow名
