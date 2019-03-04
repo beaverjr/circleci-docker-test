@@ -24,6 +24,8 @@ jobs:
    docker:
       - image: circleci/python:3.6.1
    steps:
+      - checkout
+      - setup_remote_docker
       - run:
           name: Push image to ECR
           command: |
@@ -40,7 +42,7 @@ workflows:
       - deploy: 
           requires: # buildが成功したら
             - build
-          filters: 
+         filters: 
             branches: # masterブランチのみ実行する
               only: 
                 - master
