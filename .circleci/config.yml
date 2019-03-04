@@ -16,6 +16,7 @@ jobs:
       - run:
           name: Build image
           command: |
+            ls -al ./
             docker build -t $FULL_IMAGE_NAME_WP -f ./wp/Dockerfile .
             docker build -t $FULL_IMAGE_NAME_MYSQL -f ./mysql/Dockerfile .
       - run:
