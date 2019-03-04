@@ -1,53 +1,74 @@
-# Environment variables
-# - HOST_NAME
-# - USER_NAME
-
 version: 2
 jobs:
- build:
-   docker:
-     - image: circleci/golang:1.8
-   steps:
+  build:
+    docker:
+      - image: circleci/golang:1.8
+    steps:
       - checkout
       - setup_remote_docker
+      - run:
+          name: Setup common environment variables
+          command: |
+            echo 'export ECR_REPOSITORY_NAME_WP="wp"' >> $BASH_ENV
+            echo 'export ECR_REPOSITORY_NAME_MYSQL="mysql"' >> $BASH_ENV
+            echo 'export FULL_IMAGE_NAME_WP="${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/${ECR_REPOSITORY_NAME_WP}:${CIRCLE_SHA1}"' >> $BASH_ENV
+            echo 'export FULL_IMAGE_NAME_MYSQL="${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/${ECR_REPOSITORY_NAME_MYSQL}:${CIRCLE_SHA1}"' >> $BASH_ENV
       - run:
           name: Build image
           command: |
-            docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest -f ./mysql/Dockerfile .
-            docker build -t 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest -f ./wp/Dockerfile .
+            docker build -t $FULL_IMAGE_NAME_WP ./wp/Dockerfile
+            docker build -t $FULL_IMAGE_NAME_MYSQL ./mysql/Dockerfile
       - run:
           name: Test image
           command: |
-            docker run -d -p 8000:80 --name wp-test 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
-            docker run -d --name mysql-test 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest
-
-
- deploy:        
-   docker:
-      - image: circleci/golang:1.8
-        aws_auth:
-          aws_access_key_id: $AWS_ACCESS_KEY_ID
-          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
-   steps:
+            docker run -d -p 8000:80 --name wp-test $FULL_IMAGE_NAME_WP
+            docker run -d --name mysql-test $FULL_IMAGE_NAME_MYSQL
+      - run:
+          name: Save image to an archive
+          command: |
+            mkdir docker-image
+            docker save -o docker-image/image_wp.tar $FULL_IMAGE_NAME_WP
+            docker save -o docker-image/image_mysql.tar $FULL_IMAGE_NAME_MYSQL
+      - persist_to_workspace:
+          root: .
+          paths:
+            - docker-image
+  deploy:  
+    docker:
+      - image: circleci/python:3.6.1
+    environment:
+      AWS_DEFAULT_OUTPUT: json
+    steps:
       - checkout
       - setup_remote_docker
+      - attach_workspace:
+          at: workspace
+      - restore_cache:
+          key: v1-{{ checksum "requirements.txt" }}
       - run:
-          name: Push image to ECR
+          name: Install awscli
           command: |
-            docker push 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest
-            docker push 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
-
-
-
-workflows:
-  version: 2
-  build_deploy: # workflow名
-    jobs:
-      - build
-      - deploy: 
-          requires: # buildが成功したら
-            - build
-          filters: 
-            branches: # masterブランチのみ実行する
-              only: 
-                - master
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+      - save_cache:
+          key: v1-{{ checksum "requirements.txt" }}
+          paths:
+            - "venv"
+      - run:
+          name: Load image
+          command: |
+            docker load --input workspace/docker-image/image_wp.tar
+            docker load --input workspace/docker-image/image_mysql.tar
+      - run:
+          name: Setup common environment variables
+          command: |
+            echo 'export ECR_REPOSITORY_NAME_WP="wp"' >> $BASH_ENV
+            echo 'export ECR_REPOSITORY_NAME_MYSQL="mysql"' >> $BASH_ENV
+      - run:
+          name: Push image
+          command: |
+            . venv/bin/activate
+            eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+            docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_WP:$CIRCLE_SHA1
+            docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_MYSQL:$CIRCLE_SHA1
