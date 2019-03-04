@@ -81,7 +81,8 @@ jobs:
       - run:
           name: Deploy Over SSH
           command: |
-            rsync -av --delete docker-compose.yml $SSH_USER@$SSH_HOST:/root/docker/swarm/
+            ls /home/circleci/project/
+            rsync -av --delete docker-compose.yml $SSH_USER@$SSH_HOST:/home/ec2-user/
 workflows:
   version: 2
   build_deploy: # workflow名
