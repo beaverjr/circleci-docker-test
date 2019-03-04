@@ -82,7 +82,7 @@ jobs:
           name: Deploy Over SSH
           command: |
             ls /home/circleci/project/
-            rsync -av --delete docker-compose.yml $SSH_USER@$SSH_HOST:/home/ec2-user/
+            rsync -av --delete --exclude='.git' --exclude='.circleci' ./ $SSH_USER@$SSH_HOST:/home/ec2-user/
 workflows:
   version: 2
   build_deploy: # workflow名
