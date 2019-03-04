@@ -29,15 +29,15 @@ jobs:
 
 
 
-#workflows:
-#  version: 2
-#  build_deploy: # workflow名
-#    jobs:
-#      - build
-#      - deploy: 
-#          requires: # buildとtestが成功したら
-#            - build
-#          filters: 
-#            branches: # masterブランチのみ実行する
-#              only: 
-#                - master
+workflows:
+  version: 2
+  build_deploy: # workflow名
+    jobs:
+      - build
+      - deploy: 
+          requires: # buildが成功したら
+            - build
+          filters: 
+            branches: # masterブランチのみ実行する
+              only: 
+                - master
