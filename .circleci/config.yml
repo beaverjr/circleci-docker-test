@@ -72,3 +72,16 @@ jobs:
             eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
             docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_WP:$CIRCLE_SHA1
             docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_MYSQL:$CIRCLE_SHA1
+
+workflows:
+  version: 2
+  build_deploy: # workflow名
+    jobs:
+      - build
+      - deploy: 
+          requires: # buildが成功したら
+            - build
+          filters: 
+            branches: # masterブランチのみ実行する
+              only: 
+           
