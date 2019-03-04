@@ -86,7 +86,8 @@ jobs:
           command: |
             rsync -av ./docker-compose.yml $SSH_USER@$SSH_HOST:/home/ec2-user/
             ssh $SSH_USER@$SSH_HOST "sudo su -"
-            ssh $SSH_USER@$SSH_HOST "cp /home/ec2-user/docker-compose.yml /root/docker/swarm/"
+            ssh $SSH_USER@$SSH_HOST "sudo cp /home/ec2-user/docker-compose.yml /root/docker/swarm/"
+            ssh $SSH_USER@$SSH_HOST "docker stack deploy wp-test -c docker-compose.yml --with-registry-auth" 
 workflows:
   version: 2
   build_deploy: # workflow名
