@@ -7,9 +7,6 @@ jobs:
  build:
    docker:
      - image: circleci/golang:1.8
-       aws_auth:
-          aws_access_key_id: $AWS_ACCESS_KEY_ID  # can specify string literal values
-          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY  # or project UI envar refere
    steps:
       - checkout
       - setup_remote_docker
@@ -23,24 +20,22 @@ jobs:
           command: |
             docker run -d -p 8000:80 --name wp-test 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
             docker run -d --name mysql-test 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest
-      - run: 
+
+
+ deploy:        
+   docker:
+      - image: circleci/golang:1.8
+        aws_auth:
+          aws_access_key_id: $AWS_ACCESS_KEY_ID
+          aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+   steps:
+      - checkout
+      - setup_remote_docker
+      - run:
           name: Push image to ECR
           command: |
             docker push 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest
-            docker push 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com
-
-
-# deploy:        
-#   docker:
-#      - image: circleci/python:3.6.1
-#   steps:
-#      - checkout
-#      - setup_remote_docker
-#      - run:
-#          name: Push image to ECR
-#          command: |
-#            docker push 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest
-#            docker push 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
+            docker push 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
 
 
 
