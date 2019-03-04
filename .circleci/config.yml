@@ -20,17 +20,24 @@ jobs:
           command: |
             docker run -d -p 8000:80 --name wp-test 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
             docker run -d --name mysql-test 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest
- deploy:        
-   docker:
-      - image: circleci/python:3.6.1
-   steps:
-      - checkout
-      - setup_remote_docker
-      - run:
+      - run: 
           name: Push image to ECR
           command: |
             docker push 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest
-            docker push 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
+            docker push 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com
+
+
+# deploy:        
+#   docker:
+#      - image: circleci/python:3.6.1
+#   steps:
+#      - checkout
+#      - setup_remote_docker
+#      - run:
+#          name: Push image to ECR
+#          command: |
+#            docker push 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest
+#            docker push 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
 
 
 
