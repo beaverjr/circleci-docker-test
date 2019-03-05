@@ -85,7 +85,7 @@ jobs:
           name: Deploy Over SSH
           command: |
             rsync -av ./docker-compose.yml $SSH_USER@$SSH_HOST:/home/ec2-user/
-            ssh $SSH_USER@$SSH_HOST "sudo su -; eval $(aws ecr get-login --region ap-northeast-1 --no-include-email)"
+            ssh $SSH_USER@$SSH_HOST "eval $(sudo aws ecr get-login --region ap-northeast-1 --no-include-email)"
             ssh $SSH_USER@$SSH_HOST "sudo cp /home/ec2-user/docker-compose.yml /root/docker/swarm/"
             ssh $SSH_USER@$SSH_HOST "sudo docker stack deploy wp-test -c docker-compose.yml --with-registry-auth" 
 workflows:
