@@ -8,7 +8,7 @@ services:
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: wordpress_password
     deploy:
-      replicas: 3
+      replicas: 2
   wordpress:
     image: 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
     environment:
@@ -18,4 +18,4 @@ services:
     ports:
       - 8000:80
     deploy:
-      replicas: 3
+      replicas: 2
