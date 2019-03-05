@@ -94,9 +94,9 @@ workflows:
     jobs:
       - build
       - deploy: 
-          requires: # buildが成功したら
+          requires: # buildが成功したらdeploy
             - build
-      - deploy_ssh: # deployが成功したら
+      - deploy_ssh: # deployが成功したらdeploy_ssh
           requires:
             - deploy
           filters: 
