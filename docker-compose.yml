@@ -1,7 +1,7 @@
 version: '3'
 services:
   mysql:
-    image: 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/mysql:latest
+    image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_MYSQL:latest
     environment:
       MYSQL_ROOT_PASSWORD: some_password
       MYSQL_DATABASE: wordpress
@@ -10,7 +10,7 @@ services:
     deploy:
       replicas: 2
   wordpress:
-    image: 433649235084.dkr.ecr.ap-northeast-1.amazonaws.com/wp:latest
+    image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_WP:latest
     environment:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress_password
