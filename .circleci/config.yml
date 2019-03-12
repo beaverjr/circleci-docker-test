@@ -11,6 +11,8 @@ jobs:
           command: |
             echo 'export ECR_REPOSITORY_NAME_WP="wp"' >> $BASH_ENV
             echo 'export ECR_REPOSITORY_NAME_MYSQL="mysql"' >> $BASH_ENV
+            echo 'export ECR_REPOSITORY_NAME_NGINX="nginx"' >> $BASH_ENV
+            echo 'export ECR_REPOSITORY_NAME_PHPFPM="php-fpm"' >> $BASH_ENV
             echo 'export FULL_IMAGE_NAME_WP="${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/${ECR_REPOSITORY_NAME_WP}:${CIRCLE_SHA1}"' >> $BASH_ENV
             echo 'export FULL_IMAGE_NAME_MYSQL="${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/${ECR_REPOSITORY_NAME_MYSQL}:${CIRCLE_SHA1}"' >> $BASH_ENV
             echo 'export FULL_IMAGE_NAME_NGINX="${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/${ECR_REPOSITORY_NAME_NGINX}:${CIRCLE_SHA1}"' >> $BASH_ENV
@@ -79,7 +81,7 @@ jobs:
             echo 'export ECR_REPOSITORY_NAME_WP="wp"' >> $BASH_ENV
             echo 'export ECR_REPOSITORY_NAME_MYSQL="mysql"' >> $BASH_ENV
             echo 'export ECR_REPOSITORY_NAME_NGINX="nginx"' >> $BASH_ENV
-            echo 'export ECR_REPOSITORY_NAME_PHPFPM="phpfpm"' >> $BASH_ENV
+            echo 'export ECR_REPOSITORY_NAME_PHPFPM="php-fpm"' >> $BASH_ENV
       - run:
           name: Push image
           command: |
