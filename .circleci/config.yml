@@ -84,6 +84,7 @@ jobs:
             echo 'export ECR_REPOSITORY_NAME_PHPFPM="php-fpm"' >> $BASH_ENV
       - run:
           name: tag to latest
+          command: |
             docker tag $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_WP:latest $FULL_IMAGE_NAME_WP
             docker tag $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_MYSQL:latest $FULL_IMAGE_NAME_MYSQL
             docker tag $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_NGINX:latest $FULL_IMAGE_NAME_NGINX
