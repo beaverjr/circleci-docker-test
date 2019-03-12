@@ -19,3 +19,13 @@ services:
       - 8000:80
     deploy:
       replicas: 2
+  nginx:
+    image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_NGINX:latest
+      ports:
+          - "8080:80"
+      depends_on:
+          - php
+  php:
+    image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_PHPFPM:latest
+    volumes:
+        - ./code:/code
