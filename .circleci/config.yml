@@ -89,10 +89,10 @@ jobs:
       - run:
           name: tag to latest
           command: |
-            docker tag $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_WP:latest $FULL_IMAGE_NAME_WP
-            docker tag $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_MYSQL:latest $FULL_IMAGE_NAME_MYSQL
-            docker tag $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_NGINX:latest $FULL_IMAGE_NAME_NGINX
-            docker tag $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_PHPFPM:latest $FULL_IMAGE_NAME_PHPFPM
+            docker tag $FULL_IMAGE_NAME_WP $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_WP:latest
+            docker tag $FULL_IMAGE_NAME_MYSQL $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_MYSQL:latest 
+            docker tag $FULL_IMAGE_NAME_NGINX $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_NGINX:latest
+            docker tag $FULL_IMAGE_NAME_PHPFPM $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_PHPFPM:latest
       - run:
           name: Push image
           command: |
