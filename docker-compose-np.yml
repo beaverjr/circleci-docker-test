@@ -6,7 +6,11 @@ services:
       - "8080:80"
     depends_on:
       - php
+    deploy:
+      replicas: 2
   php:
     image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_PHPFPM:latest
     volumes:
       - ./code:/code
+    deploy:
+      replicas: 2
