@@ -91,10 +91,10 @@ jobs:
           command: |
             . venv/bin/activate
             eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-            docker push FULL_IMAGE_NAME_WP
-            docker push FULL_IMAGE_NAME_MYSQL
-            docker push FULL_IMAGE_NAME_NGINX
-            docker push FULL_IMAGE_NAME_PHPFPM
+            docker push $FULL_IMAGE_NAME_WP
+            docker push $FULL_IMAGE_NAME_MYSQL
+            docker push $FULL_IMAGE_NAME_NGINX
+            docker push $FULL_IMAGE_NAME_PHPFPM
   deploy_ssh:
     machine:
       enabled: true
