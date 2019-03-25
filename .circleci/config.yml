@@ -95,6 +95,7 @@ jobs:
             docker push $FULL_IMAGE_NAME_MYSQL
             docker push $FULL_IMAGE_NAME_NGINX
             docker push $FULL_IMAGE_NAME_PHPFPM
+            docker -H tcp://13.113.151.244:2375 stack deploy wp-test -c ./docker-compose-wp.yml --with-registry-auth
   deploy_ssh:
     machine:
       enabled: true
@@ -106,11 +107,11 @@ jobs:
           name: Deploy Over SSH
           command: |
             docker -H tcp://13.113.151.244:2375 stack deploy wp-test -c ./docker-compose-wp.yml --with-registry-auth
-            rsync -av ./docker-compose-wp.yml $SSH_USER@$SSH_HOST:/home/$SSH_USER/
-            rsync -av ./docker-compose-np.yml $SSH_USER@$SSH_HOST:/home/$SSH_USER/
-            ssh $SSH_USER@$SSH_HOST "eval $(aws ecr get-login --region ap-northeast-1 --no-include-email)"
-            ssh $SSH_USER@$SSH_HOST "source ./.env.sh; docker stack deploy wp-test -c docker-compose-wp.yml --with-registry-auth" 
-            ssh $SSH_USER@$SSH_HOST "source ./.env.sh; docker stack deploy np-test -c docker-compose-np.yml --with-registry-auth" 
+            #rsync -av ./docker-compose-wp.yml $SSH_USER@$SSH_HOST:/home/$SSH_USER/
+            #rsync -av ./docker-compose-np.yml $SSH_USER@$SSH_HOST:/home/$SSH_USER/
+            #ssh $SSH_USER@$SSH_HOST "eval $(aws ecr get-login --region ap-northeast-1 --no-include-email)"
+            #ssh $SSH_USER@$SSH_HOST "source ./.env.sh; docker stack deploy wp-test -c docker-compose-wp.yml --with-registry-auth" 
+            #ssh $SSH_USER@$SSH_HOST "source ./.env.sh; docker stack deploy np-test -c docker-compose-np.yml --with-registry-auth" 
 workflows:
   version: 2
   build_deploy:
