@@ -105,6 +105,7 @@ jobs:
       - run:
           name: Deploy Over SSH
           command: |
+            sed 
             rsync -av ./docker-compose-wp.yml $SSH_USER@$SSH_HOST:/home/$SSH_USER/
             rsync -av ./docker-compose-np.yml $SSH_USER@$SSH_HOST:/home/$SSH_USER/
             ssh $SSH_USER@$SSH_HOST "eval $(aws ecr get-login --region ap-northeast-1 --no-include-email)"
