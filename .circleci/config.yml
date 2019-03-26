@@ -126,8 +126,8 @@ jobs:
             echo '-----BEGIN CERTIFICATE-----' > cert.pem && echo $CERT_PEM | sed -e 's/\s\+/\n/g' >> cert.pem && echo '-----END CERTIFICATE-----' >> cert.pem
             echo '-----BEGIN RSA PRIVATE KEY-----' > key.pem && echo $KEY_PEM | sed -e 's/\s\+/\n/g' >> key.pem && echo '-----END RSA PRIVATE KEY-----' >> key.pem
             docker --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem -H tcp://$SERVER_IP:2376 service ls
-            docker --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem -H tcp://$SERVER_IP:2376 service ls stack deploy wp-test -c ./docker-compose-wp.yml --with-registry-auth
-            docker --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem -H tcp://$SERVER_IP:2376 service ls stack deploy np-test -c ./docker-compose-np.yml --with-registry-auth
+            docker --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem -H tcp://$SERVER_IP:2376 stack deploy wp-test -c ./docker-compose-wp.yml --with-registry-auth
+            docker --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem -H tcp://$SERVER_IP:2376 stack deploy np-test -c ./docker-compose-np.yml --with-registry-auth
             docker --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem -H tcp://$SERVER_IP:2376 service ls
 workflows:
   version: 2
