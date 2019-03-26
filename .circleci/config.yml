@@ -115,7 +115,8 @@ jobs:
           name: Deploy Over SSH
           command: |
             eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-            docker --tls -H tcp://13.113.151.244:2376 service ls
+            #docker --tls -H tcp://13.113.151.244:2376 service ls
+            docker --tlsverify --tlscacert=$CA_PEM --tlscert=$CERT_PEM --tlskey=$KEY_PEM -H tcp://13.113.151.244:2376 service ls
             docker --tls -H tcp://13.113.151.244:2376 stack deploy wp-test -c ./docker-compose-wp.yml --with-registry-auth
             docker --tls -H tcp://13.113.151.244:2376 stack deploy np-test -c ./docker-compose-np.yml --with-registry-auth
             docker --tls -H tcp://13.113.151.244:2376 service ls
