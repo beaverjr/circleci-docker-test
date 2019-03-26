@@ -116,9 +116,9 @@ jobs:
           command: |
             eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
             #docker --tls -H tcp://13.113.151.244:2376 service ls
-            cat <<EOS>ca.pem $CA_PEM EOS
-            cat <<EOS>cert.pem $CERT_PEM EOS
-            cat <<EOS>key.pem $$KEY_PEM EOS
+            echo $CA_PEM >> ca.pem
+            echo $CERT_PEM >> cert.pem
+            echo $KEY_PEM >> key.pem
             cat ca.pem
             docker --tlsverify --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem -H tcp://13.113.151.244:2376 service ls
             docker --tls -H tcp://13.113.151.244:2376 stack deploy wp-test -c ./docker-compose-wp.yml --with-registry-auth
