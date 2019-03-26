@@ -108,6 +108,7 @@ jobs:
           name: Deploy Over SSH
           command: |
             docker --tls -H tcp://13.113.151.244:2376 service ls
+            docker --tls -H tcp://13.113.151.244:2375 stack deploy wp-test -c ./docker-compose-wp.yml --with-registry-auth
             #docker -H tcp://13.113.151.244:2375 stack deploy wp-test -c ./docker-compose-wp.yml --with-registry-auth
             #rsync -av ./docker-compose-wp.yml $SSH_USER@$SSH_HOST:/home/$SSH_USER/
             #rsync -av ./docker-compose-np.yml $SSH_USER@$SSH_HOST:/home/$SSH_USER/
