@@ -127,9 +127,9 @@ jobs:
             echo '-----BEGIN RSA PRIVATE KEY-----' > key.pem && echo $KEY_PEM | sed -e 's/\s\+/\n/g' >> key.pem && echo '-----END RSA PRIVATE KEY-----' >> key.pem
             cat key.pem
             docker -H tcp://13.113.151.244:2376 --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem service ls
-            docker --tls -H tcp://13.113.151.244:2376 stack deploy wp-test -c ./docker-compose-wp.yml --with-registry-auth
-            docker --tls -H tcp://13.113.151.244:2376 stack deploy np-test -c ./docker-compose-np.yml --with-registry-auth
-            docker --tls -H tcp://13.113.151.244:2376 service ls
+            docker -H tcp://13.113.151.244:2376 --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem service ls stack deploy wp-test -c ./docker-compose-wp.yml --with-registry-auth
+            docker -H tcp://13.113.151.244:2376 --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem service ls stack deploy np-test -c ./docker-compose-np.yml --with-registry-auth
+            docker -H tcp://13.113.151.244:2376 --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem service ls service ls
 workflows:
   version: 2
   build_deploy:
