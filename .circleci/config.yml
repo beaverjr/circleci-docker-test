@@ -121,13 +121,11 @@ jobs:
           name: Deploy Over SSH
           command: |
             eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-            #docker --tls -H tcp://13.113.151.244:2376 service ls
+            docker --tls -H tcp://13.113.151.244:2376 service ls
             echo $CA_PEM >> ca.pem
             echo $CERT_PEM >> cert.pem
             echo $KEY_PEM >> key.pem
-            cat ca.pem
-            docker version
-            docker --tlsverify --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem -H tcp://13.113.151.244:2376 service ls
+            docker --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem -H tcp://13.113.151.244:2376 service ls
             docker --tls -H tcp://13.113.151.244:2376 stack deploy wp-test -c ./docker-compose-wp.yml --with-registry-auth
             docker --tls -H tcp://13.113.151.244:2376 stack deploy np-test -c ./docker-compose-np.yml --with-registry-auth
             docker --tls -H tcp://13.113.151.244:2376 service ls
