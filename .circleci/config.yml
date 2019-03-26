@@ -125,6 +125,7 @@ jobs:
             echo $CA_PEM >> ca.pem
             echo $CERT_PEM >> cert.pem
             echo $KEY_PEM >> key.pem
+            cat key.pem
             docker -H tcp://13.113.151.244:2376 --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem service ls
             docker --tls -H tcp://13.113.151.244:2376 stack deploy wp-test -c ./docker-compose-wp.yml --with-registry-auth
             docker --tls -H tcp://13.113.151.244:2376 stack deploy np-test -c ./docker-compose-np.yml --with-registry-auth
