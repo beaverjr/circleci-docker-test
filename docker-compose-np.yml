@@ -11,6 +11,6 @@ services:
   php:
     image: $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$ECR_REPOSITORY_NAME_PHPFPM:${CIRCLE_SHA1}
     volumes:
-      - ./code:/code
+      - /home/ec2-user/code:/code
     deploy:
       replicas: 2
