@@ -53,7 +53,8 @@ jobs:
       AWS_DEFAULT_OUTPUT: json
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 18.06.0-ce
       - attach_workspace:
           at: workspace
       - restore_cache:
