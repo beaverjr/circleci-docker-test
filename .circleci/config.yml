@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build_push:
     docker:
       - image: circleci/python:3.6.1
     environment:
@@ -82,13 +82,10 @@ workflows:
   version: 2
   build_deploy:
     jobs:
-      - build
-      - deploy: 
-          requires:
-            - build
+      - build_push:
       - deploy_api:
           requires:
-            - deploy
+            - build_push
           filters: 
             branches:
               only:
