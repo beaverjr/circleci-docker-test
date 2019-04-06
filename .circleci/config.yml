@@ -80,9 +80,8 @@ jobs:
             docker --tls --tlscacert=ca.pem --tlscert=cert.pem --tlskey=key.pem -H tcp://$SERVER_IP:2376 service ls
 workflows:
   version: 2
-  build_deploy:
+  build_push:
     jobs:
-      - build_push:
       - deploy_api:
           requires:
             - build_push
